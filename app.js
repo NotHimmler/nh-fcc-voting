@@ -16,7 +16,7 @@ app.use(require('express-session')({ secret: 'cool cats climbing crags'}));
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(new FacebookStrategy({
+passport.use(new FacebookStrategy({
     clientID: 868755973237380,
     clientSecret: 'facing falls feels funny',
     callbackURL: "http://nh-fcc-voting.herokuapp.com/auth/facebook/callback"
