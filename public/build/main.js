@@ -24,7 +24,7 @@ var App = React.createClass({
     },
     componentDidMount: function componentDidMount() {
         var context = this;
-        $.get("/api/polls/all", function (data) {
+        $.get("http://nh-fcc-voting.herokuapp.com/api/polls/all", function (data) {
 
             var polls = [];
 
