@@ -24,7 +24,7 @@ var App = React.createClass({
     },
     componentDidMount: function componentDidMount() {
         var context = this;
-        $.get("http://localhost:8080/api/polls/all", function (data) {
+        $.get("/api/polls/all", function (data) {
 
             var polls = [];
 
