@@ -1,5 +1,11 @@
 "use strict";
 
+var baseUrl = "http://nh-fcc-voting.herokuapp.com";
+
+if (/^http\:\/\/localhost/.test(window.location.href)) {
+    baseUrl = "";
+}
+
 var PollOption = React.createClass({
     displayName: "PollOption",
 
@@ -47,12 +53,13 @@ var CreatePoll = React.createClass({
         this.setState({ numOptions: numOptions, options: options });
     },
     render: function render() {
+        var action = baseUrl + "/createpoll";
         return React.createElement(
             "div",
             null,
             React.createElement(
                 "form",
-                { method: "post", action: "https://nh-fcc-voting.herokuapp.com/createpoll" },
+                { method: "post", action: action },
                 React.createElement(
                     "label",
                     null,

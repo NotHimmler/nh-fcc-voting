@@ -1,5 +1,11 @@
 "use strict";
 
+var baseUrl = "http://nh-fcc-voting.herokuapp.com";
+
+if (/^http\:\/\/localhost/.test(window.location.href)) {
+    baseUrl = "";
+}
+
 var Poll = React.createClass({
     displayName: "Poll",
 
@@ -24,12 +30,12 @@ var App = React.createClass({
     },
     componentDidMount: function componentDidMount() {
         var context = this;
-        $.get("https://nh-fcc-voting.herokuapp.com/api/polls/all", function (data) {
+        $.get(baseUrl + "/api/polls/all", function (data) {
 
             var polls = [];
 
             JSON.parse(data).forEach(function (datum) {
-                var link = "https://nh-fcc-voting.herokuapp.com/poll/" + datum.id;
+                var link = baseUrl + "/poll/" + datum.id;
                 polls.push(React.createElement(Poll, { url: link, title: datum.title, key: datum.id }));
             });
 

@@ -1,5 +1,11 @@
 "use strict";
 
+var baseUrl = "http://nh-fcc-voting.herokuapp.com";
+
+if (/^http\:\/\/localhost/.test(window.location.href)) {
+    baseUrl = "";
+}
+
 var Question = React.createClass({
     displayName: "Question",
 
@@ -26,7 +32,7 @@ var Poll = React.createClass({
     componentDidMount: function componentDidMount() {
         var pollNumber = $('#pollNumber').html();
         var context = this;
-        $.get('https://nh-fcc-voting.herokuapp.com/api/polls/' + pollNumber, function (data) {
+        $.get(baseUrl + '/api/polls/' + pollNumber, function (data) {
             context.setState({ poll: data });
             var questions = [];
             data.questions.forEach(function (datum, i) {
