@@ -26,7 +26,7 @@ var Poll = React.createClass({
     componentDidMount: function componentDidMount() {
         var pollNumber = $('#pollNumber').html();
         var context = this;
-        $.get('http://nh-fcc-voting.herokuapp.com/api/polls/' + pollNumber, function (data) {
+        $.get('https://nh-fcc-voting.herokuapp.com/api/polls/' + pollNumber, function (data) {
             context.setState({ poll: data });
             var questions = [];
             data.questions.forEach(function (datum, i) {

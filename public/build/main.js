@@ -24,12 +24,12 @@ var App = React.createClass({
     },
     componentDidMount: function componentDidMount() {
         var context = this;
-        $.get("http://nh-fcc-voting.herokuapp.com/api/polls/all", function (data) {
+        $.get("https://nh-fcc-voting.herokuapp.com/api/polls/all", function (data) {
 
             var polls = [];
 
             JSON.parse(data).forEach(function (datum) {
-                var link = "http://nh-fcc-voting.herokuapp.com/poll/" + datum.id;
+                var link = "https://nh-fcc-voting.herokuapp.com/poll/" + datum.id;
                 polls.push(React.createElement(Poll, { url: link, title: datum.title, key: datum.id }));
             });
 

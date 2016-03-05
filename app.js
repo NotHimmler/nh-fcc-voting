@@ -85,12 +85,9 @@ app.get('/poll/:pollid', function(req, res){
 })
 
 app.post('/vote', function(req, res){
-    //console.log(req.body.pollNumber);
     Poll.findOne({id: req.body.pollNumber}, function(err,record){
         var updated = record;
-        //console.log(updated.questions[Number(req.body.answer)]);
         updated.questions[Number(req.body.answer)].count++;
-        //console.log(updated.questions[Number(req.body.answer)]);
         Poll.update(updated, function(err){
             if(err) res.redirect(400, '400');
             

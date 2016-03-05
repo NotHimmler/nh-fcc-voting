@@ -52,7 +52,7 @@ var CreatePoll = React.createClass({
             null,
             React.createElement(
                 "form",
-                { method: "post", action: "http://nh-fcc-voting.herokuapp.com/createpoll" },
+                { method: "post", action: "https://nh-fcc-voting.herokuapp.com/createpoll" },
                 React.createElement(
                     "label",
                     null,
