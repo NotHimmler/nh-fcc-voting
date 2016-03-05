@@ -29,7 +29,7 @@ var App = React.createClass({
             var polls = [];
 
             JSON.parse(data).forEach(function (datum) {
-                var link = "/poll/" + datum.id;
+                var link = "http://nh-fcc-voting.herokuapp.com/poll/" + datum.id;
                 polls.push(React.createElement(Poll, { url: link, title: datum.title, key: datum.id }));
             });
 
