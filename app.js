@@ -30,17 +30,6 @@ app.use(require('express-session')({ secret: 'cool cats climbing crags'}));
 app.use(passport.initialize());
 app.use(passport.session());
 
-passport.use(new FacebookStrategy({
-    clientID: '868755973237380',
-    clientSecret: 'facing falls feels funny',
-    callbackURL: "http://localhost:8080/auth/facebook/callback"
-  },
-  function(accessToken, refreshToken, profile, done){
-      console.log(profile);
-      done(null, null);
-  }
-))
-
 app.get("/", function(req, res){
    res.render('index'); 
 });
@@ -90,13 +79,6 @@ app.get('/api/polls/:pollid', function(req,res){
         res.send(data);
     })
 })
-
-app.get('/auth/facebook', passport.authenticate('facebook'));
-
-app.get("/auth/facebook/callback", function(req, res){
-    passport.authenticate('facebook', {successRedirect: '/', failureRedirect: '/login'});
-});
-
 app.get('/poll/:pollid', function(req, res){
     res.send(req.ip);
     //res.render('poll', {number: req.params.pollid});
