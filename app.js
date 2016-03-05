@@ -6,6 +6,7 @@ var Poll = require('./models/polls.js');
 var credentials = require('./credentials.js');
 var passport = require('passport');
 var FacebookStrategy = require('passport-facebook').Strategy;
+var cors = require('cors');
 
 var mongOpts = {
     server: {
@@ -67,14 +68,14 @@ app.get("/login", function(req, res){
     res.render('login');
 });
 
-app.get('/api/polls/all', function(req, res){
+app.get('/api/polls/all', cors(), function(req, res){
     Poll.find(function(err, results){
        if(err) return;
        res.send(JSON.stringify(results));
     });
 })
 
-app.get('/api/polls/:pollid', function(req,res){
+app.get('/api/polls/:pollid', cors(), function(req,res){
     Poll.findOne({id: req.params.pollid}, function(err,data){
         res.send(data);
     })
