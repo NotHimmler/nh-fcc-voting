@@ -98,8 +98,8 @@ app.get("/auth/facebook/callback", function(req, res){
 });
 
 app.get('/poll/:pollid', function(req, res){
-    console.log(req.ip);
-    res.render('poll', {number: req.params.pollid});
+    res.send(req.ip);
+    //res.render('poll', {number: req.params.pollid});
 })
 
 app.post('/vote', function(req, res){
