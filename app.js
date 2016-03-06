@@ -78,7 +78,7 @@ app.get('/api/polls/all', cors(), function(req, res){
 
 app.get('/api/polls/:pollid', cors(), function(req,res){
     Poll.findOne({id: req.params.pollid}, function(err,data){
-        res.send(JSON.stringify(data));
+        res.send(data);
     })
 })
 app.get('/poll/:pollid', function(req, res){
