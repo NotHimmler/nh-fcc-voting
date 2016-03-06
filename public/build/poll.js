@@ -33,7 +33,7 @@ var Poll = React.createClass({
         var pollNumber = $('#pollNumber').html();
         var context = this;
         $.get(baseUrl + '/api/polls/' + pollNumber, function (data) {
-            context.setState({ poll: data });
+            context.setState({ poll: JSON.parse(data) });
             var questions = [];
             data.questions.forEach(function (datum, i) {
                 questions.push(React.createElement(Question, { id: i, handleClick: context.handleClick, question: datum.question, key: i }));
