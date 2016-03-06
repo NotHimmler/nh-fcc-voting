@@ -27,7 +27,9 @@ var Poll = React.createClass({
     handleClick: function handleClick(e) {
         console.log(e.target.id);
         var context = this;
-        $.post('/vote', { pollNumber: context.state.poll.id, answer: e.target.id });
+        $.post('/vote', { pollNumber: context.state.poll.id, answer: e.target.id }, function () {
+            location.reload();
+        });
     },
     componentDidMount: function componentDidMount() {
         var pollNumber = $('#pollNumber').html();
@@ -46,7 +48,7 @@ var Poll = React.createClass({
         var questions = this.state.questions;
         return React.createElement(
             "div",
-            null,
+            { className: "pollBox" },
             React.createElement(
                 "h3",
                 null,

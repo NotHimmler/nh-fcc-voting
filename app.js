@@ -6,8 +6,10 @@ var Poll = require('./models/polls.js');
 var credentials = require('./credentials.js');
 var passport = require('passport');
 var FacebookStrategy = require('passport-facebook').Strategy;
+var TwitterStrategy = require('passport-twitter').Strategy;
 var cors = require('cors');
 var Votes = require('./models/votes.js');
+var Users = require('./models/users.js');
 
 var mongOpts = {
     server: {
@@ -32,9 +34,30 @@ app.use(require('express-session')({ secret: 'cool cats climbing crags'}));
 app.use(passport.initialize());
 app.use(passport.session());
 
+passport.use(new TwitterStrategy({
+   consumerKey: "tVemD40OqPZS7V1crdZCuGsKU",
+   consumerSecret: "FkOTBrZdm3aBr2UXIhmDhjFluFvgEjUgbLKlhQ3zPgOi68g6iC",
+   callbackURL: "http://localhost:8080/auth/twitter/callback"
+   },
+   function(token, tokenSecret, profile, cb) {
+       Users.findOrCreate({ twitterId: profile.id }, function(err, user){
+           return cb(err, user);
+       })
+   })
+)
+
 app.get("/", function(req, res){
    res.render('index'); 
 });
+
+app.get('/auth/twitter', passport.authenticate('twitter'));
+
+app.get('/auth/twitter/callback', 
+    passport.authenticate('twitter', {failureRedirect: '/login'}),
+    function(req, res){
+        res.redirect(200, '/');
+    }
+)
 
 app.get("/createpoll", function(req, res){
     res.render('createPoll');
@@ -42,7 +65,7 @@ app.get("/createpoll", function(req, res){
 
 app.post("/createpoll", function(req, res){
     var poll = req.body;
-    
+    var id;
     if(poll.title !== ""){
         if(poll.option.length !== 0){
             var questions = [];
@@ -51,7 +74,7 @@ app.post("/createpoll", function(req, res){
                 if(option !== "") questions.push({question: option, count: 0});
             });
             
-            var id = new Date().getTime();
+            id = new Date().getTime();
             var newPoll = new Poll({
                 id: id,
                 title: poll.pollTitle,
@@ -62,7 +85,7 @@ app.post("/createpoll", function(req, res){
         }
     }
     
-    return res.redirect(303,'/');
+    return res.redirect(302,'/poll/'+id);
 })
 
 app.get("/login", function(req, res){
@@ -84,45 +107,89 @@ app.get('/api/polls/:pollid', cors(), function(req,res){
 app.get('/poll/:pollid', function(req, res){
     var ip = req.ip;
     var pollNumber = req.params.pollid;
-    Votes.findOne({pollId: pollNumber}, function(err, data){
-        if(err) res.redirect(302, '/');
-        if(data && data.length !== 0){
-            if(data.ipAddresses.indexOf(ip) !== -1){
-                res.render('pollResult', {number: pollNumber});
-            } else {
-                res.render('poll', {number: pollNumber});    
-            }
+    Poll.findOne({id: pollNumber}, function(err, data){
+        if (err) res.render('500', {error: "Database Error."});
+        if (data && data.length !== 0){
+            Votes.findOne({pollId: pollNumber}, function(err, data){
+                if(err) res.render('500', {error: "Database Error."});
+                if(data && data.length !== 0){
+                    if(data.ipAddresses.indexOf(ip) !== -1){
+                        res.render('pollResult', {number: pollNumber});
+                    } else {
+                        res.render('poll', {number: pollNumber});    
+                    }
+                } else {
+                    res.render('poll', {number: pollNumber});
+                }
+            })
         } else {
-            res.render('poll', {number: pollNumber});
+            res.render('404', {error: "Poll does not exist."});
         }
     })
+    
 })
 
 app.post('/vote', function(req, res){
     var ip = req.ip;
     
     Poll.findOne({id: req.body.pollNumber}, function(err,record){
-        var updated = record;
-        updated.questions[Number(req.body.answer)].count++;
-        Poll.update(updated, function(err){
-            if(err) return res.redirect(400, '400');
-            Votes.find({pollId: req.body.pollNumber}, function(err, data){
-                if(err) return res.redirect(302, "/");
-                if(data && data.length !== 0){
-                    var updatedVote = data.ipAddresses.push(ip);
-                    Votes.update(updatedVote);
-                } else {
-                    var newVote = new Votes({
-                        pollId: req.body.pollNumber,
-                        ipAddresses: [ip]
-                    });
-                    newVote.save();
-                }
-                res.redirect(302, '/poll/'+req.body.pollNumber);
-            });
+        if(err){
+            res.status(500);
+            res.end();
+        }
+        Votes.findOne({pollId: req.body.pollNumber}, function(err,vote){
+           if(err) {
+               res.status(500);
+               res.end;
+           }
+           
+           if(vote){
+               if(vote.ipAddresses.indexOf(ip) === -1) {
+                   var updatedVote = vote.ipAddresses.push(ip);
+                   Votes.update({pollId: req.body.pollNumber}, updatedVote, function(err){
+                       if(err) {
+                           res.status(500);
+                           res.end();
+                       }
+                       
+                       var updatedPoll = record;
+                       record.questions[Number(req.body.answer)].count++;
+                       Poll.update({id: req.body.pollNumber}, updatedPoll, function(err){
+                           if(err){
+                               res.status(500);
+                               res.end;
+                           }
+                           
+                           res.status(200);
+                           res.end();
+                       })
+                   })
+               }
+           } else {
+               new Votes({
+                   pollId: req.body.pollNumber,
+                   ipAddresses: [ip]
+               }).save(function(err){
+                   if (err){
+                       res.status(500);
+                       res.end;
+                   }
+                   var updatedPoll = record;
+                    record.questions[Number(req.body.answer)].count++;
+                    Poll.update({id: req.body.pollNumber}, updatedPoll, function(err){
+                        if(err){
+                            res.status(500);
+                            res.end;
+                        }
+                        
+                        res.status(200);
+                        res.end();
+                    })
+               });
+               res.status(200);
+               res.end();
+           }
         });
-        
-        
     });
 });
 

@@ -1,0 +1,14 @@
+.pollBox {
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.pollQ {
+    border-radius: 5px;
+    padding: 5px;
+    background-color: grey;
+    margin-bottom: 5px;
+    color: white;
+    cursor: pointer;
+}

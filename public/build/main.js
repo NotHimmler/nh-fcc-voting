@@ -12,7 +12,7 @@ var Poll = React.createClass({
     render: function render() {
         return React.createElement(
             "div",
-            null,
+            { className: "poll" },
             React.createElement(
                 "a",
                 { href: this.props.url },
@@ -46,7 +46,12 @@ var App = React.createClass({
         var polls = this.state.polls;
         return React.createElement(
             "div",
-            null,
+            { className: "polls" },
+            React.createElement(
+                "div",
+                { className: "pollsHeader" },
+                "All Polls"
+            ),
             polls
         );
     }

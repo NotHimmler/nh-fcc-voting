@@ -9,8 +9,8 @@ var Login = React.createClass({
             { className: "login-box" },
             React.createElement(
                 "a",
-                { href: "/auth/facebook" },
-                "Login with Facebook"
+                { href: "/auth/twitter" },
+                "Login with Twitter"
             )
         );
     }

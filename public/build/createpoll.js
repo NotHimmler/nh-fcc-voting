@@ -13,12 +13,12 @@ var PollOption = React.createClass({
         var name = this.props.name;
         return React.createElement(
             "div",
-            null,
+            { className: "pollOption" },
             React.createElement(
                 "label",
-                null,
+                { className: "createLabel" },
                 "Option ",
-                name.substr(4),
+                name.substr(3),
                 " "
             ),
             React.createElement("input", { type: "text", name: "option" }),
@@ -31,12 +31,12 @@ var CreatePoll = React.createClass({
     displayName: "CreatePoll",
 
     getInitialState: function getInitialState() {
-        return { numOptions: 1, options: [] };
+        return { numOptions: 2, options: [] };
     },
     componentDidMount: function componentDidMount() {
         var options = [];
         for (var i = 0; i < this.state.numOptions; i++) {
-            var ref = "opt" + i + 1;
+            var ref = "opt" + (i + 1);
             console.log(ref);
             options.push(React.createElement(PollOption, { name: ref, key: ref }));
         }
@@ -48,21 +48,33 @@ var CreatePoll = React.createClass({
         var numOptions = this.state.numOptions + 1;
         var options = this.state.options;
         var ref = "opt" + numOptions;
+
         options.push(React.createElement(PollOption, { name: ref, key: ref }));
 
         this.setState({ numOptions: numOptions, options: options });
+    },
+    handleRemove: function handleRemove() {
+        var numOptions = this.state.numOptions;
+
+        if (numOptions > 2) {
+            numOptions--;
+            this.state.options.pop();
+            var options = this.state.options;
+
+            this.setState({ numOptions: numOptions, options: options });
+        }
     },
     render: function render() {
         var action = baseUrl + "/createpoll";
         return React.createElement(
             "div",
-            null,
+            { className: "createForm" },
             React.createElement(
                 "form",
                 { method: "post", action: action },
                 React.createElement(
                     "label",
-                    null,
+                    { className: "createLabel" },
                     "Title "
                 ),
                 React.createElement("input", { type: "text", name: "pollTitle" }),
@@ -70,10 +82,23 @@ var CreatePoll = React.createClass({
                 this.state.options,
                 React.createElement(
                     "div",
-                    { onClick: this.handleAdd },
-                    "Add Option"
+                    { className: "changeOptions" },
+                    React.createElement(
+                        "div",
+                        { onClick: this.handleAdd, id: "addOpt" },
+                        "Add Option"
+                    ),
+                    React.createElement(
+                        "div",
+                        { onClick: this.handleRemove, id: "removeOpt" },
+                        "Remove Option"
+                    )
                 ),
-                React.createElement("input", { type: "submit", value: "Create Poll" })
+                React.createElement(
+                    "div",
+                    { className: "submitButton" },
+                    React.createElement("input", { type: "submit", value: "Create Poll" })
+                )
             )
         );
     }
