@@ -48,7 +48,7 @@ app.post("/createpoll", function(req, res){
             var questions = [];
             
             poll.option.forEach(function(option){
-               questions.push({question: option, count: 0});
+                if(option !== "") questions.push({question: option, count: 0});
             });
             
             var id = new Date().getTime();
