@@ -88,7 +88,7 @@ app.get('/poll/:pollid', function(req, res){
         if(err) res.redirect(302, '/');
         if(data && data.length !== 0){
             if(data.ipAddresses.indexOf(ip) !== -1){
-                res.redirect(302, "/");
+                res.render('pollResult', {number: pollNumber});
             } else {
                 res.render('poll', {number: pollNumber});    
             }
