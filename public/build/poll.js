@@ -1,6 +1,6 @@
 "use strict";
 
-var baseUrl = "http://nh-fcc-voting.herokuapp.com";
+var baseUrl = "https://nh-fcc-voting.herokuapp.com";
 
 if (/^http\:\/\/localhost/.test(window.location.href)) {
     baseUrl = "";
