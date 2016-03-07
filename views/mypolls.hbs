@@ -1,0 +1,23 @@
+<div class="polls">
+    <div class="pollsHeader">My Polls</div>
+        {{#if polls}}
+            {{#each polls}}
+                <a href={{id}}>
+                    <div class="poll">{{title}}</div>
+                </a>
+            {{/each}}
+        {{/if}}
+</div>
+    
+<script>
+    
+    var baseUrl = "https://nh-fcc-voting.herokuapp.com";
+
+    if(/^http\:\/\/localhost/.test(window.location.href)){
+        baseUrl = "";
+    }
+    
+    $('.polls a').each(function(){
+        $(this).attr('href',baseUrl+"/poll/"+$(this).attr('href'));
+    })
+</script>

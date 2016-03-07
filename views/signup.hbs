@@ -1,17 +1,19 @@
+<link rel="stylesheet" type="text/css" href="/styles/login.css">
+
 <div class="login-box">
       <form action="#" method="post">
-          <div class="loginSignupHeader">Log In</div>
+          <div class="loginSignupHeader">Sign Up</div>
           <span>Email Address</span><br />
-          <input type="text" name="email" class="txtInput" /><br />
+          <input type="text" name="email" class="txtInput"  /><br />
           <span>Password</span><br />
-          <input type="password" name="password" class="txtInput"/><br />
-          <input type="submit" class="submit-btn" value="Log In" />
+          <input type="password" name="password" class="txtInput" /><br />
+          <input type="submit" class="submit-btn" value="Login" />
       </form>
       <div class="loginSignup">--Or--</div>
       <a href="" id="twitter"><div class="loginButton" id="twitterLogin">Twitter</div></a>
       <a href="" id="facebook"><div class="loginButton" id="fbLogin">Facebook</div></a>
       <a href="" id="google"><div class="loginButton" id="googleLogin">Google</div></a>
-      <div class="loginSignup">Not A Member? <a href="" id="signup">Sign Up</a></div>  
+      <div class="loginSignup">Already A Member? <a href="" id="signup">Log In</a></div>  
 </div>
     
 <script>
@@ -21,11 +23,11 @@
         baseUrl = "";
     }
     
-    $('form').attr('action',baseUrl+"/login");
+    $('form').attr('action',baseUrl+"/signup");
     
     $('.login-box a').each(function(){
         $(this).attr('href',baseUrl+"/auth/"+$(this).attr('id'))
     })
     
-    $('#signup').attr('href', baseUrl+'/signup');
+    $('#signup').attr('href', baseUrl+'/login');
 </script>

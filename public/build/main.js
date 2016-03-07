@@ -11,11 +11,11 @@ var Poll = React.createClass({
 
     render: function render() {
         return React.createElement(
-            "div",
-            { className: "poll" },
+            "a",
+            { href: this.props.url },
             React.createElement(
-                "a",
-                { href: this.props.url },
+                "div",
+                { className: "poll" },
                 this.props.title
             )
         );

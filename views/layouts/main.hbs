@@ -6,13 +6,66 @@
         <script src="/lib/react.js"></script>
         <script src="/lib/react-dom.js"></script>
         <link rel="stylesheet" type="text/css" href="/styles/main.css"/>
+        <link href='https://fonts.googleapis.com/css?family=Josefin+Sans' rel='stylesheet' type='text/css'>
     </head>
     <body>
         <div class="container">
-            <div id="header"></div>
-            <script type="text/javascript" src="/build/header.js"></script>
+            <div id="header">
+                <div class="header">
+                    <a href="#" id="home"><div class="home">
+                        FreeVoteCamp
+                    </div></a>
+                    <div class="nav">
+                        <a href="#" id="newPoll"><div>New Poll</div></a>
+                        {{#if user}}
+                            <a href="#" id="myPolls"><div>My Polls</div></a>
+                            <div id="name">
+                                {{#if user.twitter.displayName}}
+                                    {{user.twitter.displayName}}
+                                {{else if user.local.email}}
+                                    {{user.local.email}}
+                                {{else if user.facebook.name}}
+                                    {{user.facebook.name}}
+                                {{else if user.google.name}}
+                                    {{user.google.displayName}}
+                                {{/if}}
+                            </div>
+                            <a href="#" id="logout"><div id="logoutBox" style="display: none">
+                                <div id="logoutButton">Logout</div>
+                            </div></a>
+                        {{else}}
+                            <a href="#" id="login"><div>Login</div></a>
+                        {{/if}}
+                    </div>
+                </div>
+            </div>
+            
             <div id="mount"></div>
             {{{body}}}
         </div>
+        
+        <script>
+            var baseUrl = "https://nh-fcc-voting.herokuapp.com";
+
+            if(/^http\:\/\/localhost/.test(window.location.href)){
+                baseUrl = "";
+            }
+            
+            $('#newPoll').attr('href',baseUrl+"/createpoll");
+            $('#myPolls').attr('href',baseUrl+"/mypolls");
+            $('#logout').attr('href',baseUrl+"/logout");
+            $('#login').attr('href',baseUrl+"/login");
+            $('#home').attr('href',baseUrl+"/");
+            
+            $('.nav div').mouseenter(function(){
+                $(this).css('background-color', '#E5FCC2');
+            }).mouseleave(function(){
+                $(this).css('background-color','#9DE0AD');
+            });
+            
+            $('#name').click(function(){
+                $('#logoutBox').toggle();
+            }); 
+        </script>
     </body>
 </html>

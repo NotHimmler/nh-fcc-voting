@@ -42,20 +42,20 @@ var PollResult = React.createClass({
             }).attr("width", function (d) {
                 if (d.count === 0 || questions[0].count === 0) return 0;
                 return d.count / questions[0].count * 300;
-            }).attr("height", 20).attr("fill", "#F2EEB3");
+            }).attr("height", 20).attr("fill", "#FF9F80");
 
             svg.selectAll("text").data(questions).enter().append("text").text(function (d) {
                 return d.question + " - " + d.count;
             }).attr("x", 5).attr("y", function (d, i) {
                 return i * 21 + 15;
-            }).attr("font-size", "0.8em").attr("fill", "#260126");
+            }).attr("font-size", "0.8em").attr("fill", "#594F4F");
         });
     },
     render: function render() {
         var title = this.state.title;
         return React.createElement(
             "div",
-            null,
+            { className: "pollResult" },
             React.createElement(
                 "h3",
                 null,
