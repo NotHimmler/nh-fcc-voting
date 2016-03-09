@@ -120,9 +120,9 @@ app.get('/poll/:pollid', function(req, res){
         if (err) res.render('500', {error: "Database Error."});
         if (data && data.length !== 0){
             if ((user && data.votes.userId.indexOf(user) === -1) || data.votes.ipAddresses.indexOf(ip) === -1) {
-                res.render('poll', {number: pollNumber});
+                res.render('poll', {number: pollNumber, user: req.user});
             } else {
-                res.render('pollResult', {number: pollNumber});
+                res.render('pollResult', {number: pollNumber, user: req.user});
             }
         } else {
             res.render('404', {error: "Poll does not exist.", user: req.user});
