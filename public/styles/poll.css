@@ -1,7 +1,11 @@
 .pollBox {
-    width: 300px;
+    width: 100%;
     margin-left: auto;
     margin-right: auto;
+}
+
+.pollBox h3 {
+    text-align: center;
 }
 
 .pollQ {
@@ -11,4 +15,10 @@
     margin-bottom: 5px;
     color: white;
     cursor: pointer;
+}
+
+@media only screen and (min-width: 300px){
+    .pollBox {
+        width: 300px;
+    }
 }

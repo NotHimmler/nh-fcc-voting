@@ -21,7 +21,7 @@ var PollOption = React.createClass({
                 name.substr(3),
                 " "
             ),
-            React.createElement("input", { type: "text", name: "option" }),
+            React.createElement("input", { type: "text", name: "option", className: "createInput" }),
             React.createElement("br", null)
         );
     }
@@ -73,31 +73,48 @@ var CreatePoll = React.createClass({
                 "form",
                 { method: "post", action: action },
                 React.createElement(
-                    "label",
-                    { className: "createLabel" },
-                    "Title "
+                    "div",
+                    { className: "createHeader" },
+                    "Create A Poll"
                 ),
-                React.createElement("input", { type: "text", name: "pollTitle" }),
-                React.createElement("br", null),
-                this.state.options,
                 React.createElement(
                     "div",
                     { className: "changeOptions" },
                     React.createElement(
                         "div",
-                        { onClick: this.handleAdd, id: "addOpt" },
-                        "Add Option"
+                        { className: "changeBtnContainer" },
+                        React.createElement(
+                            "div",
+                            { onClick: this.handleAdd, id: "addOpt" },
+                            "Add Option"
+                        )
                     ),
                     React.createElement(
                         "div",
-                        { onClick: this.handleRemove, id: "removeOpt" },
-                        "Remove Option"
+                        { className: "changeBtnContainer" },
+                        React.createElement(
+                            "div",
+                            { onClick: this.handleRemove, id: "removeOpt" },
+                            "Remove Option"
+                        )
                     )
                 ),
                 React.createElement(
                     "div",
+                    { className: "pollOption" },
+                    React.createElement(
+                        "label",
+                        { className: "createLabel" },
+                        "Title "
+                    ),
+                    React.createElement("input", { type: "text", name: "pollTitle", className: "createInput" })
+                ),
+                React.createElement("br", null),
+                this.state.options,
+                React.createElement(
+                    "div",
                     { className: "submitButton" },
-                    React.createElement("input", { type: "submit", value: "Create Poll" })
+                    React.createElement("input", { type: "submit", value: "Create Poll", className: "submitButton" })
                 )
             )
         );

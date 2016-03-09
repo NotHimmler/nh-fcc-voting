@@ -1,11 +1,10 @@
 * {
     font-family: 'Josefin Sans', sans-serif;
+    color: #594F4F; 
 }
 
 body {
-    margin: 0px;
-    padding: 0px;
-    width: 100%;
+    max-width: 100%;
     background-color: #E5FCC2;
 }
 
@@ -17,19 +16,20 @@ a:link:active, a:visited {
     width: 100%;
     margin-left: auto;
     margin-right: auto;
-    padding: 0px;
 }
 
 .header {
-    width: 100%;
+    width: 99%;
+    margin-left: auto;
+    margin-right: auto;
     height: 50px;
-    margin: 0px;
-    padding: 0px;
     background-color: #9DE0AD;
     color: #594F4F;
     border-left: 1px solid grey;
     border-bottom: 1px solid grey;
     border-right: 1px solid grey;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
 }
 
 .header a{
@@ -46,22 +46,54 @@ a:link:active, a:visited {
 }
 
 .nav {
+    display: none;
+    position: fixed;
+    top: 50px;
+    right: 0px;
+    float: right;
+    line-height: 50px;
+    cursor: pointer;
+    background-color: #9DE0AD;
+    border: 1px solid #594F4F;
+}
+
+.nav a:link, .nav a:visited {
+    text-decoration: none;
+}
+
+.nav div {
+    display: block;
+    padding-left: 5px;
+    padding-right: 5px;
+    text-align: center;
+}
+
+.navButton {
+    height: 100%;
+    text-decoration: none;
+}
+
+.menu {
     position: relative;
     float: right;
     line-height: 50px;
     cursor: pointer;
-}
-
-.nav div {
-    display: inline-block;
-    padding-left: 5px;
-    padding-right: 5px;
+    padding-right: 7px;
+    padding-left: 7px;
 }
 
 #logoutBox {
     position: absolute;
-    bottom: -50;
+    bottom: -75px;
     right: 0;
+    padding: 15px;
+}
+
+#logoutButton {
+    background-color: #DD4B39;
+    padding-right: 10px;
+    padding-left: 10px;
+    border-radius: 5px;
 }
 
 .createForm {
@@ -69,15 +101,24 @@ a:link:active, a:visited {
     margin-left: auto;
     margin-right: auto;
     margin-top: 15px;
+    padding: 15px;
+    background: #9DE0AD;
+    border-radius: 5px;
+}
+
+.createHeader {
+    font-size: 1.5em;
+    margin-bottom: 10px;
 }
 
 .createLabel {
     min-width: 30%;
-    float: left;
+    display: inline-block;
 }
 
-.createForm form input {
-    float: right;
+.createInput {
+    width: 60%;
+    display: inline-block;
 }
 
 .pollOption {
@@ -85,44 +126,46 @@ a:link:active, a:visited {
 }
 
 .changeOptions {
-    clear: both;
-    padding: 5px;
+    width: 100%;
     margin-top: 5px;
-    margin-bottom: 5px;
+    margin-bottom: 15px;
+}
+
+.changeBtnContainer {
+    width: 50%;
+    display: inline-block;
 }
 
 #addOpt {
-    float: left;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 5px;
+    border-radius: 5px;
+    display: inline-block;
+    color: white;
+    background-color: dodgerblue;
 }
 
 #removeOpt {
-    float: right;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 5px;
+    border-radius: 5px;
+    color: white;
+    background-color: #DD4B39;
+    display: inline-block;
 }
 
 .submitButton {
-    width: 100%;
-    clear: both;
     margin-top: 5px;
-}
-
-@media only screen and (min-width: 300px){
-    .createForm {
-        width: 300px;
-    }
-    
-    .polls {
-        width: 300px;
-    }
-}
-
-@media only screen and (min-width: 900px){
-    .container {
-        width: 900px
-    }
+    margin-left:auto;
+    margin-right: auto;
+    font-size:1.01em;
+    padding: 5px;
 }
 
 .polls {
-    width: 100%;
+    width: 300px;
     margin-left: auto;
     margin-right: auto;
     margin-top: 20px;
@@ -132,7 +175,7 @@ a:link:active, a:visited {
 .poll {
     padding: 5px;
     color: white;
-    background-color: #9DE0AD;
+    background-color: grey;
     border-radius: 5px;
     margin-bottom: 5px;
 }
@@ -230,4 +273,44 @@ form {
     margin-left: auto;
     margin-right: auto;
     color: #594F4F;
+}
+
+.pollResult h3 {
+    text-align: center;
+}
+
+
+@media only screen and (min-width: 300px){
+    .createForm {
+        width: 300px;
+    }
+    
+    .polls {
+        width: 300px;
+    }
+}
+
+@media only screen and (min-width: 600px){
+    .nav {
+        background-color: none;
+        border: none;
+        display: inline-block;
+        position:relative;
+        top: auto;
+        right: auto;
+    }
+    
+    .nav div {
+        display: inline-block;
+    }
+    
+    .menu {
+        display: none;
+    }
+}
+
+@media only screen and (min-width: 900px){
+    .container {
+        width: 900px
+    }
 }

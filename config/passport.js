@@ -50,7 +50,13 @@ module.exports = function(app, passport){
                         newUser.google.id = profile.id;
                         newUser.google.token = token;
                         newUser.google.name = profile.displayName;
-                        newUser.google.email = profile.emails[0];
+                        newUser.google.email = profile.emails[0].value;
+                        
+                        newUser.save(function(err){
+                            if (err) throw err;
+                            
+                            return done(null, newUser);
+                        })
                     }
                 })
             })
@@ -70,7 +76,6 @@ module.exports = function(app, passport){
                     if (user) {
                         return done(null, user);
                     } else {
-                        console.log(profile);
                         var newUser = new Users();
                         newUser.facebook.id = profile.id;
                         newUser.facebook.token = token;

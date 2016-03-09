@@ -6,10 +6,6 @@ var Poll = require('../models/polls.js');
 
 module.exports = function(app, passport) {
 app.get("/", function(req, res){
-   if(req.user) {
-    console.log(req.user);
-    console.log(req.session);
-   }
    res.render('index', {user: req.user}); 
 });
 
@@ -116,17 +112,18 @@ app.get('/mypolls', function(req, res){
 app.get('/poll/:pollid', function(req, res){
     var ip = req.ip;
     var pollNumber = req.params.pollid;
+    var user;
+    
+    req.user ? user = req.user._id : user = false;
+    
     Poll.findOne({id: pollNumber}, function(err, data){
         if (err) res.render('500', {error: "Database Error."});
         if (data && data.length !== 0){
-            Votes.findOne({pollId: pollNumber}, function(err, data){
-                if(err) res.render('500', {error: "Database Error."});
-                if(data && data.length !== 0 && data.ipAddresses.indexOf(ip) !== -1){
-                    res.render('pollResult', {number: pollNumber, user: req.user});
-                } else {
-                    res.render('poll', {number: pollNumber, user: req.user});
-                }
-            })
+            if ((user && data.votes.userId.indexOf(user) === -1) || data.votes.ipAddresses.indexOf(ip) === -1) {
+                res.render('poll', {number: pollNumber});
+            } else {
+                res.render('pollResult', {number: pollNumber});
+            }
         } else {
             res.render('404', {error: "Poll does not exist.", user: req.user});
         }
@@ -149,66 +146,38 @@ app.post('/signup', passport.authenticate('local-signup', {
 }));
 
 app.post('/vote', function(req, res){
-    var ip = req.ip;
+    var userIp = req.ip;
+    var pollNumber = req.body.pollNumber;
+    var answer = Number(req.body.answer);
+    var authenticated, user;
     
-    Poll.findOne({id: req.body.pollNumber}, function(err,record){
-        if(err){
-            res.status(500);
-            res.end();
+    req.user ? (user = req.user._id) : user = false;
+    
+    Poll.findOne({id: pollNumber}, function(err, poll){
+        if(err) {
+           res.status(500);
+           res.end();
         }
-        Votes.findOne({pollId: req.body.pollNumber}, function(err,vote){
-           if(err) {
-               res.status(500);
-               res.end;
-           }
-           
-           if(vote){
-               if(vote.ipAddresses.indexOf(ip) === -1) {
-                   var updatedVote = vote.ipAddresses.push(ip);
-                   Votes.update({pollId: req.body.pollNumber}, updatedVote, function(err){
-                       if(err) {
-                           res.status(500);
-                           res.end();
-                       }
-                       
-                       var updatedPoll = record;
-                       record.questions[Number(req.body.answer)].count++;
-                       Poll.update({id: req.body.pollNumber}, updatedPoll, function(err){
-                           if(err){
-                               res.status(500);
-                               res.end;
-                           }
-                           
-                           res.status(200);
-                           res.end();
-                       })
-                   })
-               }
-           } else {
-               new Votes({
-                   pollId: req.body.pollNumber,
-                   ipAddresses: [ip]
-               }).save(function(err){
-                   if (err){
-                       res.status(500);
-                       res.end;
-                   }
-                   var updatedPoll = record;
-                    record.questions[Number(req.body.answer)].count++;
-                    Poll.update({id: req.body.pollNumber}, updatedPoll, function(err){
-                        if(err){
-                            res.status(500);
-                            res.end;
-                        }
-                        
-                        res.status(200);
-                        res.end();
-                    })
-               });
-               res.status(200);
-               res.end();
-           }
+        
+        var updated = poll;
+        updated.questions[answer].count++;
+        
+        if(user && poll.votes.userId.indexOf(user) === -1){
+            updated.votes.userId.push(user);
+        } else if(!user && poll.votes.ipAddresses.indexOf(userIp) === -1) {
+            updated.votes.ipAddresses.push(userIp);
+        }
+        
+        
+        Poll.update({id: pollNumber}, updated, function(err){
+            if(err){
+                res.status(500);
+                res.end();
+            } else {
+                res.status(200);
+                res.end();
+            }
         });
-    });
+    })
 });
 }

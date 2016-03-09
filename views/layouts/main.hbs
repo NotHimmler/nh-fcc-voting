@@ -15,11 +15,12 @@
                     <a href="#" id="home"><div class="home">
                         FreeVoteCamp
                     </div></a>
+                    <div class="menu">Menu</div>
                     <div class="nav">
-                        <a href="#" id="newPoll"><div>New Poll</div></a>
+                        <a href="#" id="newPoll"><div class="navButton">New Poll</div></a>
                         {{#if user}}
-                            <a href="#" id="myPolls"><div>My Polls</div></a>
-                            <div id="name">
+                            <a href="#" id="myPolls"><div class="navButton">My Polls</div></a>
+                            <div id="name" class="navButton">
                                 {{#if user.twitter.displayName}}
                                     {{user.twitter.displayName}}
                                 {{else if user.local.email}}
@@ -27,14 +28,14 @@
                                 {{else if user.facebook.name}}
                                     {{user.facebook.name}}
                                 {{else if user.google.name}}
-                                    {{user.google.displayName}}
+                                    {{user.google.name}}
                                 {{/if}}
                             </div>
-                            <a href="#" id="logout"><div id="logoutBox" style="display: none">
-                                <div id="logoutButton">Logout</div>
-                            </div></a>
+                            <div id="logoutBox" style="display: none">
+                                <a href="#" id="logout"><div id="logoutButton">Logout</div></a>
+                            </div>
                         {{else}}
-                            <a href="#" id="login"><div>Login</div></a>
+                            <a href="#" id="login" class="navButton"><div class="navButton">Login</div></a>
                         {{/if}}
                     </div>
                 </div>
@@ -57,7 +58,7 @@
             $('#login').attr('href',baseUrl+"/login");
             $('#home').attr('href',baseUrl+"/");
             
-            $('.nav div').mouseenter(function(){
+            $('.nav .navButton, .menu').mouseenter(function(){
                 $(this).css('background-color', '#E5FCC2');
             }).mouseleave(function(){
                 $(this).css('background-color','#9DE0AD');
@@ -65,7 +66,11 @@
             
             $('#name').click(function(){
                 $('#logoutBox').toggle();
-            }); 
+            });
+            
+            $(".menu").click(function(){
+                $('.nav').toggle();
+            }) 
         </script>
     </body>
 </html>

@@ -3,9 +3,7 @@ var mongoose = require('mongoose');
 var voteSchema = mongoose.Schema({
     pollId: String,
     ipAddresses: [String],
-    twitterIds: [String],
-    googleIds: [String],
-    facebookIds: [String]
+    userId: [String]
 });
 
 var Votes = mongoose.model("Votes", voteSchema);

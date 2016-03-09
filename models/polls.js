@@ -4,6 +4,7 @@ var pollSchema = mongoose.Schema({
     id: String,
     title: String,
     questions: [{question: String, count: Number}],
+    votes: {ipAddresses: [String], userId: [String]},
     author: String
 });
 
