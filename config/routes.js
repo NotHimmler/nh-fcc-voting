@@ -120,7 +120,7 @@ app.get('/poll/:pollid', function(req, res){
     Poll.findOne({id: pollNumber}, function(err, data){
         if (err) res.render('500', {error: "Database Error."});
         if (data && data.length !== 0){
-            if ((user && data.votes.userId.indexOf(user) === -1) || data.votes.ipAddresses.indexOf(ip) === -1) {
+            if ((user && data.votes.userId.indexOf(user) === -1) || (!user && data.votes.ipAddresses.indexOf(ip) === -1)) {
                 res.render('poll', {number: pollNumber, user: req.user});
             } else {
                 res.render('pollResult', {number: pollNumber, user: req.user});
