@@ -73,6 +73,7 @@ app.post("/createpoll", function(req, res){
                 id: id,
                 title: poll.pollTitle,
                 questions: questions,
+				votes: {ipAddresses: [], userId: []},
                 author: author,
             });
             
