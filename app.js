@@ -2,7 +2,6 @@ var express = require('express');
 var app = express();
 var hbs = require('express-handlebars');
 var mongoose = require('mongoose');
-var credentials = require('./credentials.js');
 var passport = require('passport');
 var process = require('process');
 var flash = require('connect-flash');
@@ -15,7 +14,7 @@ var mongOpts = {
     }
 }
 
-mongoose.connect(credentials.db.connection, mongOpts);
+mongoose.connect(process.env["MONGO"], mongOpts);
 
 app.set('port', process.env['PORT'] || 8080);
 app.engine('hbs', hbs({extname: '.hbs', defaultLayout: 'main.hbs'}));
